@@ -1,7 +1,9 @@
 package naivestringsearch;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class NaiveStringSearch {
@@ -59,6 +61,16 @@ public class NaiveStringSearch {
         }
 
         System.out.println("Number of all the results found : " + count);
+        try {
+        String str = "World";
+BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+writer.append(' ');
+writer.append(str);
+writer.close();
+    }
+        catch(Exception e){System.out.println(e);}    
+          System.out.println("Success...");    
+
 
     }
 
