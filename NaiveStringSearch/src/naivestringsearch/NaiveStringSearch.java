@@ -3,6 +3,7 @@ package naivestringsearch;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -43,7 +44,13 @@ public class NaiveStringSearch {
                 }
             }
         }
+         try {
+             
+        
+BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true));
 
+
+writer.append("======================================================================================================== \n Naive String Search Method Results \n ");
         int count = 0;
         for (int i = 0; i < vect.size(); i++) { // go through the indexes
             int j;
@@ -55,21 +62,19 @@ public class NaiveStringSearch {
             }
 
             if (j == 6) {
-                System.out.println("BirthDay Found At : " + i);
+                //System.out.println("BirthDay Found At : " + i);
+                writer.append("BirthDay Found At : " + i+"\n");
                 count++;
             }
         }
 
-        System.out.println("Number of all the results found : " + count);
-        try {
-        String str = "World";
-BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-writer.append(' ');
-writer.append(str);
+        //System.out.println("Number of all the results found : " + count);
+        writer.append("Number of all the results found : " + count+ "\n");
+       
 writer.close();
     }
         catch(Exception e){System.out.println(e);}    
-          System.out.println("Success...");    
+          System.out.println("Successfully Added to results.txt");    
 
 
     }
