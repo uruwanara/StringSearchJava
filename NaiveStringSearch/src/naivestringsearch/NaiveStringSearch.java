@@ -35,21 +35,22 @@ public class NaiveStringSearch {
 
         while (sc2.hasNextLine()) {
             String s3 = sc2.nextLine();
-            if (!s3.isEmpty()) {
-                for (int i = 0; i < 56; i++) {
-                    if (s3.charAt(i) != ' ') {
+            if (!s3.isEmpty()) { // ignore the empty lines at every 500 indexes
+                for (int i = 0; i < 56; i++) { // decline the last digits at a row (  : 100) 
+                    if (s3.charAt(i) != ' ') { // ignore the blank spacs
                         vect.add(s3.charAt(i)); // Add indexes to the vector
 
                     }
                 }
             }
         }
+        System.out.println(vect.size());
         try {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
 
-            writer.append("========================================================================================================\n\t\t Naive String Search Method Results"
-                    + "\n========================================================================================================\n");
+            writer.append("====================================================================================\n\t\t Naive String Search Method Results"
+                    + "\n====================================================================================\n");
             int count = 0;
             for (int i = 0; i < vect.size(); i++) { // go through the indexes
                 int j;
