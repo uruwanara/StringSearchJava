@@ -48,7 +48,8 @@ public class NaiveStringSearch {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
 
-            writer.append("======================================================================================================== \n Naive String Search Method Results \n ");
+            writer.append("========================================================================================================\n\t\t Naive String Search Method Results"
+                    + "\n========================================================================================================\n");
             int count = 0;
             for (int i = 0; i < vect.size(); i++) { // go through the indexes
                 int j;
