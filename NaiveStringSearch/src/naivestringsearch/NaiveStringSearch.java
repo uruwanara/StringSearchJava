@@ -44,38 +44,36 @@ public class NaiveStringSearch {
                 }
             }
         }
-         try {
-             
-        
-BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true));
+        try {
 
+            BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
 
-writer.append("======================================================================================================== \n Naive String Search Method Results \n ");
-        int count = 0;
-        for (int i = 0; i < vect.size(); i++) { // go through the indexes
-            int j;
+            writer.append("======================================================================================================== \n Naive String Search Method Results \n ");
+            int count = 0;
+            for (int i = 0; i < vect.size(); i++) { // go through the indexes
+                int j;
 
-            for (j = 0; j < 6; j++) {
-                if (vect.get(i + j) != bDay[j]) { // decline if a index is not match withthe b days pattern
-                    break;
+                for (j = 0; j < 6; j++) {
+                    if (vect.get(i + j) != bDay[j]) { // decline if a index is not match withthe b days pattern
+                        break;
+                    }
+                }
+
+                if (j == 6) {
+                    //System.out.println("BirthDay Found At : " + i);
+                    writer.append("BirthDay Found At : " + i + "\n");
+                    count++;
                 }
             }
 
-            if (j == 6) {
-                //System.out.println("BirthDay Found At : " + i);
-                writer.append("BirthDay Found At : " + i+"\n");
-                count++;
-            }
+            //System.out.println("Number of all the results found : " + count);
+            writer.append("Number of all the results found : " + count + "\n");
+
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e);
         }
-
-        //System.out.println("Number of all the results found : " + count);
-        writer.append("Number of all the results found : " + count+ "\n");
-       
-writer.close();
-    }
-        catch(Exception e){System.out.println(e);}    
-          System.out.println("Successfully Added to results.txt");    
-
+        System.out.println("Successfully Added to results.txt");// Display if the writing process is success !
 
     }
 
