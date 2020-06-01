@@ -44,7 +44,7 @@ public class NaiveStringSearch {
                 }
             }
         }
-        System.out.println(vect.size());
+       // System.out.println(vect.size());
         try {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
