@@ -76,7 +76,6 @@ public class NaiveStringSearch {
             System.out.println(e);
         }
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
-
     }
 
 }

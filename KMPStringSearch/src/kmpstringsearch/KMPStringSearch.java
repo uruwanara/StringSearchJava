@@ -86,7 +86,8 @@ public class KMPStringSearch {
         Vector<Character> vect = new Vector<Character>();
 
         System.out.println("Insert Your Bday (970810) :");
-        char[] bDay = {'9','7','0','8','1','0'}; // getv the user input of their B day
+        char[] bDay = {'9','7','0','8','1','0'};
+        System.out.println(bDay);// getv the user input of their B day
 
 //        Scanner ab = new Scanner(System.in);
 //        String bd = ab.nextLine();
