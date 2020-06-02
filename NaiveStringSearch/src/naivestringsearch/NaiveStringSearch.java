@@ -25,13 +25,13 @@ public class NaiveStringSearch {
         Vector<Character> vect = new Vector<Character>();
 
         System.out.println("Insert Your Bday (970810) :");
-        char[] bDay = new char[8]; // getv the user input of their B day
-
-        Scanner ab = new Scanner(System.in);
-        String bd = ab.nextLine();
-        for (int i = 0; i < 6; i++) {
-            bDay[i] = bd.charAt(i);
-        }
+        char[] bDay = {'9','7','0','8','1','0'}; // getv the user input of their B day
+            
+        //Scanner ab = new Scanner(System.in);
+        //String bd = ab.nextLine();
+//        for (int i = 0; i < 6; i++) {
+//            bDay[i] = bd.charAt(i);
+//        }
 
         while (sc2.hasNextLine()) {
             String s3 = sc2.nextLine();
@@ -44,13 +44,13 @@ public class NaiveStringSearch {
                 }
             }
         }
-       // System.out.println(vect.size());
+        // System.out.println(vect.size());
         try {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
-
+            System.out.println(bDay);
             writer.append("====================================================================================\n\t\t Naive String Search Method Results"
-                    + "\n====================================================================================\n");
+                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");
             int count = 0;
             for (int i = 0; i < vect.size(); i++) { // go through the indexes
                 int j;
@@ -75,7 +75,7 @@ public class NaiveStringSearch {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("Successfully Added to results.txt");// Display if the writing process is success !
+        System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
 
     }
 

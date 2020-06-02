@@ -15,7 +15,7 @@ public class KMPStringSearch {
         try {
             BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
             writter.append("====================================================================================\n\t\t KMP String Search Method Results"
-                    + "\n====================================================================================\n");     // create a results.txt file if doesnt exist and update it
+                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");     // create a results.txt file if doesnt exist and update it
 
             int LPS[] = new int[6];
             int j = 0;
@@ -86,13 +86,13 @@ public class KMPStringSearch {
         Vector<Character> vect = new Vector<Character>();
 
         System.out.println("Insert Your Bday (970810) :");
-        char[] bDay = new char[8]; // getv the user input of their B day
+        char[] bDay = {'9','7','0','8','1','0'}; // getv the user input of their B day
 
-        Scanner ab = new Scanner(System.in);
-        String bd = ab.nextLine();
-        for (int i = 0; i < 6; i++) {
-            bDay[i] = bd.charAt(i);
-        }
+//        Scanner ab = new Scanner(System.in);
+//        String bd = ab.nextLine();
+//        for (int i = 0; i < 6; i++) {
+//            bDay[i] = bd.charAt(i);
+//        }
 
         while (sc2.hasNextLine()) {
             String s3 = sc2.nextLine();
@@ -109,7 +109,7 @@ public class KMPStringSearch {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
 
-            new KMPStringSearch().KMP(new String(bDay), vect); // pass the values to the KMP function
+            new KMPStringSearch().KMP(new String(bDay), vect); // pass the information  to the KMP function
 
             writer.append("Number of all the results found : " + count + "\n");
 
