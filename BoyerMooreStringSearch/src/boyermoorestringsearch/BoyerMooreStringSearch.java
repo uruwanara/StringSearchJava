@@ -9,12 +9,14 @@ import java.util.Vector;
 
 public class BoyerMooreStringSearch {
 
-    static void strongSuffix(int[] shift, int[] border, char[] pat, int m) {
+    static int count = 0;
+
+    static void strongSuffix(int[] shift, int[] border, char[] bDay, int m) {
         int i = m, j = m + 1;
         border[i] = j;
 
         while (i > 0) {
-            while (j <= m && pat[i - 1] != pat[j - 1]) {
+            while (j <= m && bDay[i - 1] != bDay[j - 1]) {
 
                 if (shift[j] == 0) {
                     shift[j] = j - i;
@@ -30,7 +32,7 @@ public class BoyerMooreStringSearch {
     }
 
     static void arrange(int[] shift, int[] border,
-            char[] pat, int m) {
+            char[] bDay, int m) {
         int i, j;
         j = border[0];
         for (i = 0; i <= m; i++) {
@@ -45,9 +47,9 @@ public class BoyerMooreStringSearch {
         }
     }
 
-    static void BoyerMoore(Vector<Character> vect, char[] pat) {
+    static void BoyerMoore(Vector<Character> vect, char[] bDay) {
         int s = 0, j;
-        int m = pat.length;
+        int m = bDay.length;
         int n = vect.size();
 
         int[] border = new int[m + 1];
@@ -56,22 +58,32 @@ public class BoyerMooreStringSearch {
         for (int i = 0; i < m + 1; i++) {
             shift[i] = 0;
         }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true));
+            writer.append("====================================================================================\n\t\t Boyer Moore String Search Method Results"
+                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");
 
-        strongSuffix(shift, border, pat, m);
-        arrange(shift, border, pat, m);
+            strongSuffix(shift, border, bDay, m);
+            arrange(shift, border, bDay, m);
 
-        while (s <= n - m) {
-            j = m - 1;
-            while (j >= 0 && pat[j] == vect.get(s + j)) {
-                j--;
+            while (s <= n - m) {
+                j = m - 1;
+                while (j >= 0 && bDay[j] == vect.get(s + j)) {
+                    j--;
+                }
+
+                if (j < 0) {
+                    System.out.printf("BirthDay Found At : " + s + "\n");
+                    writer.append("BirthDay Found At : " + s + "\n");
+                    count++;
+                    s += shift[0];
+                } else {
+                    s += shift[j + 1];
+                }
             }
-
-            if (j < 0) {
-                System.out.printf("pattern occurs at shift = %d\n", s);
-                s += shift[0];
-            } else {
-                s += shift[j + 1];
-            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
     }
@@ -115,9 +127,7 @@ public class BoyerMooreStringSearch {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
             System.out.println(bDay);
-            writer.append("====================================================================================\n\t\t Naive String Search Method Results"
-                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");
-            int count = 0;
+
             BoyerMoore(vect, bDay);
 
             //System.out.println("Number of all the results found : " + count);
