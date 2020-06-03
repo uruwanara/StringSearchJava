@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package stringsearch;
 
 import java.io.BufferedWriter;
@@ -12,15 +7,10 @@ import java.io.FileWriter;
 import java.util.Scanner;
 import java.util.Vector;
 
-/**
- *
- * @author uruwa
- */
 public class StringSearch {
 
-    /**
-     * @param args the command line arguments
-     */
+    static int count = 0;
+
     public static void main(String[] args) {
         int temp = 0;
         Scanner sc2 = null;
@@ -37,14 +27,13 @@ public class StringSearch {
         Vector<Character> vect = new Vector<Character>();
 
         System.out.println("Insert Your Bday (970810) :");
-        char[] bDay = {'9','7','0','8','1','0'}; // getv the user input of their B day
-            
+        char[] bDay = {'9', '7', '0', '8', '1', '0'}; // getv the user input of their B day
+        System.out.println("This execution will take nearly 20 seconds to print all the results. Please Wait");
         //Scanner ab = new Scanner(System.in);
         //String bd = ab.nextLine();
 //        for (int i = 0; i < 6; i++) {
 //            bDay[i] = bd.charAt(i);
 //        }
-
         while (sc2.hasNextLine()) {
             String s3 = sc2.nextLine();
             if (!s3.isEmpty()) { // ignore the empty lines at every 500 indexes
@@ -57,22 +46,19 @@ public class StringSearch {
             }
         }
         // System.out.println(vect.size());
-       
-        new StringSearch().naive(bDay,vect);
+
+        new StringSearch().naive(bDay, vect);
         new StringSearch().KMP(new String(bDay), vect);
-        
-        
+        new StringSearch().BoyerMoore(vect, bDay);
+
     }
-    
-    
-    void naive(char[] bDay, Vector<Character> vect){
-         try {
+
+    void naive(char[] bDay, Vector<Character> vect) {
+        try {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true)); // create a results.txt file if doesnt exist and update it
-            System.out.println(bDay);
             writer.append("====================================================================================\n\t\t Naive String Search Method Results"
-                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");
-            int count = 0;
+                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");
             for (int i = 0; i < vect.size(); i++) { // go through the indexes
                 int j;
 
@@ -91,23 +77,21 @@ public class StringSearch {
 
             //System.out.println("Number of all the results found : " + count);
             writer.append("Number of all the results found : " + count + "\n");
+            count = 0;
 
             writer.close();
         } catch (Exception e) {
             System.out.println(e);
         }
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
-        // TODO code application logic here
+
     }
-    
-    
-    static int count = 0;
 
     void KMP(String bDay, Vector<Character> vect) {
         try {
             BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
             writter.append("====================================================================================\n\t\t KMP String Search Method Results"
-                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");     // create a results.txt file if doesnt exist and update it
+                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");     // create a results.txt file if doesnt exist and update it
 
             int LPS[] = new int[6];
             int j = 0;
@@ -133,10 +117,13 @@ public class StringSearch {
                     }
                 }
             }
+            writter.append("Number of all the results found : " + count + "\n");
+            count = 0;
             writter.close();
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
     }
 
     void findLPS(String bDay, int LPS[]) {
@@ -161,5 +148,85 @@ public class StringSearch {
             }
         }
     }
-    
+
+    static void strongSuffix(int[] shift, int[] border, char[] bDay, int m) {
+        int i = m, j = m + 1;
+        border[i] = j;
+
+        while (i > 0) {
+            while (j <= m && bDay[i - 1] != bDay[j - 1]) {
+
+                if (shift[j] == 0) {
+                    shift[j] = j - i;
+                }
+
+                j = border[j];
+            }
+
+            i--;
+            j--;
+            border[i] = j;
+        }
+    }
+
+    static void arrange(int[] shift, int[] border,
+            char[] bDay, int m) {
+        int i, j;
+        j = border[0];
+        for (i = 0; i <= m; i++) {
+
+            if (shift[i] == 0) {
+                shift[i] = j;
+            }
+
+            if (i == j) {
+                j = border[j];
+            }
+        }
+    }
+
+    static void BoyerMoore(Vector<Character> vect, char[] bDay) {
+        int s = 0, j;
+        int m = bDay.length;
+        int n = vect.size();
+
+        int[] border = new int[m + 1];
+        int[] shift = new int[m + 1];
+
+        for (int i = 0; i < m + 1; i++) {
+            shift[i] = 0;
+        }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt", true));
+            writer.append("====================================================================================\n\t\t Boyer Moore String Search Method Results"
+                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");
+
+            strongSuffix(shift, border, bDay, m);
+            arrange(shift, border, bDay, m);
+
+            while (s <= n - m) {
+                j = m - 1;
+                while (j >= 0 && bDay[j] == vect.get(s + j)) {
+                    j--;
+                }
+
+                if (j < 0) {
+                    // System.out.printf("BirthDay Found At : " + s + "\n");
+                    writer.append("BirthDay Found At : " + s + "\n");
+                    count++;
+                    s += shift[0];
+                } else {
+                    s += shift[j + 1];
+                }
+            }
+            writer.append("Number of all the results found : " + count + "\n");
+            count = 0;
+
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
+    }
+
 }
