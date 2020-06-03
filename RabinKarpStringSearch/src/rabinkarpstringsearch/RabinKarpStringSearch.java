@@ -61,48 +61,37 @@ public class RabinKarpStringSearch {
         new RabinKarpStringSearch().search(new String(bDay), vect, 101);
         // TODO code application logic here
     }
-    static int d = 256;
+
 
     static void search(String bDay, Vector<Character> vect, int q) {
         try {
              BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
             writter.append("====================================================================================\n\t\t KMP String Search Method Results"
                     + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");     // create a results.txt file if doesnt exist and update it
-
+            int d=256;
             int M = bDay.length();
             int N = vect.size();
             int i, j;
-            int p = 0; // hash value for bDaytern 
-            int t = 0; // hash value for vect 
+            int p = 0; 
+            int t = 0;  
             int h = 1;
 
-            // The value of h would be "pow(d, M-1)%q" 
             for (i = 0; i < M - 1; i++) {
                 h = (h * d) % q;
             }
-
-            // Calculate the hash value of bDaytern and first 
-            // window of text 
             for (i = 0; i < M; i++) {
                 p = (d * p + bDay.charAt(i)) % q;
                 t = (d * t + vect.get(i)) % q;
             }
 
-            // Slide the bDaytern over text one by one 
             for (i = 0; i <= N - M; i++) {
 
-                // Check the hash values of current window of text 
-                // and bDaytern. If the hash values match then only 
-                // check for characters on by one 
                 if (p == t) {
-                    /* Check for characters one by one */
                     for (j = 0; j < M; j++) {
                         if (vect.get(i + j) != bDay.charAt(j)) {
                             break;
                         }
                     }
-
-                    // if p == t and bDay[0...M-1] = vect[i, i+1, ...i+M-1] 
                     if (j == M) {
                       //  System.out.println("BirthDay Found At : " + i);
                         writter.append("BirthDay Found At : " + i+"\n");
@@ -110,13 +99,8 @@ public class RabinKarpStringSearch {
                     }
                 }
 
-                // Calculate hash value for next window of text: Remove 
-                // leading digit, add trailing digit 
                 if (i < N - M) {
                     t = (d * (t - vect.get(i) * h) + vect.get(i + M)) % q;
-
-                    // We might get negative value of t, converting it 
-                    // to positive 
                     if (t < 0) {
                         t = (t + q);
                     }

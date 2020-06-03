@@ -50,7 +50,7 @@ public class StringSearch {
         new StringSearch().naive(bDay, vect);
         new StringSearch().KMP(new String(bDay), vect);
         new StringSearch().BoyerMoore(vect, bDay);
-
+        new StringSearch().RabinKarp(new String(bDay), vect, 101);
     }
 
     void naive(char[] bDay, Vector<Character> vect) {
@@ -226,6 +226,58 @@ public class StringSearch {
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
+    }
+        static void RabinKarp(String bDay, Vector<Character> vect, int q) {
+        try {
+             BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
+            writter.append("====================================================================================\n\t\t Raabin Karp String Search Method Results"
+                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");     // create a results.txt file if doesnt exist and update it
+            int d=256;
+            int M = bDay.length();
+            int N = vect.size();
+            int i, j;
+            int p = 0; 
+            int t = 0;  
+            int h = 1;
+
+            for (i = 0; i < M - 1; i++) {
+                h = (h * d) % q;
+            }
+            for (i = 0; i < M; i++) {
+                p = (d * p + bDay.charAt(i)) % q;
+                t = (d * t + vect.get(i)) % q;
+            }
+
+            for (i = 0; i <= N - M; i++) {
+
+                if (p == t) {
+                    for (j = 0; j < M; j++) {
+                        if (vect.get(i + j) != bDay.charAt(j)) {
+                            break;
+                        }
+                    }
+                    if (j == M) {
+                      //  System.out.println("BirthDay Found At : " + i);
+                        writter.append("BirthDay Found At : " + i+"\n");
+                        count++;
+                    }
+                }
+
+                if (i < N - M) {
+                    t = (d * (t - vect.get(i) * h) + vect.get(i + M)) % q;
+                    if (t < 0) {
+                        t = (t + q);
+                    }
+                }
+            }
+            writter.append("Number of all the results found : " + count + "\n");
+            count = 0;
+            writter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
     }
 
