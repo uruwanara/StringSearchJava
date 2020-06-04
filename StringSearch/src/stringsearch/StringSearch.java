@@ -27,10 +27,10 @@ public class StringSearch {
         Vector<Character> vect = new Vector<Character>();
 
         System.out.println("Insert Your Bday (970810) :");
-        char[] bDay = {'9', '7', '0', '8', '1', '0'}; // getv the user input of their B day
+        char[] bDay = {'9', '7', '0', '8', '1', '0'}; // get the user input of their B day
         System.out.println("This execution will take nearly 20 seconds to print all the results. Please Wait");
-        //Scanner ab = new Scanner(System.in);
-        //String bd = ab.nextLine();
+//      Scanner ab = new Scanner(System.in);
+//      String bd = ab.nextLine();
 //        for (int i = 0; i < 6; i++) {
 //            bDay[i] = bd.charAt(i);
 //        }
@@ -63,12 +63,15 @@ public class StringSearch {
                 int j;
 
                 for (j = 0; j < 6; j++) {
-                    if (vect.get(i + j) != bDay[j]) { // decline if a index is not match withthe b days pattern
-                        break;
+                    if (vect.get(i + j) == bDay[j]) { // decline if a index is not match withthe b days pattern
+                        // do nothing just increment the j
+                    }
+                    else{
+                    break; //if the  current element is missed match with the b day element w have to break the loop
                     }
                 }
 
-                if (j == 6) {
+                if (j == 6) { // if the all the elements are matched then print the index 
                     //System.out.println("BirthDay Found At : " + i);
                     writer.append("BirthDay Found At : " + i + "\n");
                     count++;
@@ -93,12 +96,41 @@ public class StringSearch {
             writter.append("====================================================================================\n\t\t KMP String Search Method Results"
                     + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");     // create a results.txt file if doesnt exist and update it
 
-            int LPS[] = new int[6];
+            int Pi[] = {0, 0, 0, 0, 0, 0};
+            /* in KMP method we have to calculate a pi array 
+            If we consider the 970810 the pi value according to this string is |0|0|0|0|0|0|
+            But we can calate it as follow */
+
             int j = 0;
+            int i = 1;
+            /*  The referenced Algorithm that i used to create following function is Below
+                Step 1 - Define a one dimensional array with the size equal to the length of the Pattern. (LPS[size])
+                Step 2 - Define variables i & j. Set i = 0, j = 1.
+                Step 3 - Compare the characters at Pattern[i] and Pattern[j].
+                Step 4 - If both are matched then set LPS[j] = i+1 and increment both i & j values by one. Goto to Step 3.
+                Step 5 - If both are not matched then check the value of variable 'i'. If it is '0' then set LPS[j] = 0 and increment 'j' value by one, if it is not '0' then set i = LPS[i-1]. Goto Step 3.
+                Step 6- Repeat above steps until all the values of LPS[] are filled.
+             */
 
-            findLPS(bDay, LPS); // pass the bday string to calculate the LPS
+            while (i < 6) {
+                if (bDay.charAt(i) == bDay.charAt(j)) {
 
-            int i = 0;
+                    Pi[i] = j + 1;
+                    i++;
+                    j++;
+                } else {
+                    if (j == 0) {
+                        Pi[i] = 0;
+                        i++;
+                    } else {
+                        j = Pi[j - 1];
+
+                    }
+                }
+            }
+
+            j = 0;
+            i = 0;
             while (i < vect.size()) {
                 if (bDay.charAt(j) == vect.get(i)) {
                     j++;
@@ -108,12 +140,12 @@ public class StringSearch {
                     // System.out.println("BirthDay Found At : " + (i - j));
                     writter.append("BirthDay Found At : " + (i - j) + "\n");
                     count++;
-                    j = LPS[j - 1];
+                    j = Pi[j - 1];
                 } else if (i < vect.size() && bDay.charAt(j) != vect.get(i)) {
-                    if (j != 0) {
-                        j = LPS[j - 1];
-                    } else {
+                    if (j == 0) {
                         i = i + 1;
+                    } else {
+                        j = Pi[j - 1];
                     }
                 }
             }
@@ -126,27 +158,8 @@ public class StringSearch {
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
     }
 
-    void findLPS(String bDay, int LPS[]) {
-        int len = 0;
-        int i = 1;
-        LPS[0] = 0;  // we can set oth element of LPS becase it is the first element of the array so there are no repetioins 
+    void generatePi(String bDay, int Pi[]) {
 
-        while (i < 6) {
-            if (bDay.charAt(i) == bDay.charAt(len)) {
-                len++;
-                LPS[i] = len;
-                i++;
-            } else {
-
-                if (len != 0) {
-                    len = LPS[len - 1];
-
-                } else {
-                    LPS[i] = len;
-                    i++;
-                }
-            }
-        }
     }
 
     static void strongSuffix(int[] shift, int[] border, char[] bDay, int m) {
@@ -228,17 +241,18 @@ public class StringSearch {
         }
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
     }
-        static void RabinKarp(String bDay, Vector<Character> vect, int q) {
+
+    static void RabinKarp(String bDay, Vector<Character> vect, int q) {
         try {
-             BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
+            BufferedWriter writter = new BufferedWriter(new FileWriter("results.txt", true));
             writter.append("====================================================================================\n\t\t Raabin Karp String Search Method Results"
-                    + "\n====================================================================================\nBirthdy String : "+new String(bDay)+"\n\n");     // create a results.txt file if doesnt exist and update it
-            int d=256;
+                    + "\n====================================================================================\nBirthdy String : " + new String(bDay) + "\n\n");     // create a results.txt file if doesnt exist and update it
+            int d = 256;
             int M = bDay.length();
             int N = vect.size();
             int i, j;
-            int p = 0; 
-            int t = 0;  
+            int p = 0;
+            int t = 0;
             int h = 1;
 
             for (i = 0; i < M - 1; i++) {
@@ -258,8 +272,8 @@ public class StringSearch {
                         }
                     }
                     if (j == M) {
-                      //  System.out.println("BirthDay Found At : " + i);
-                        writter.append("BirthDay Found At : " + i+"\n");
+                        //  System.out.println("BirthDay Found At : " + i);
+                        writter.append("BirthDay Found At : " + i + "\n");
                         count++;
                     }
                 }
@@ -277,7 +291,7 @@ public class StringSearch {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         System.out.println("Successfully Added to results.txt");// Display  the writing process is success !
     }
 
