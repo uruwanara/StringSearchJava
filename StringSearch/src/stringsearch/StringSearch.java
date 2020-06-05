@@ -47,9 +47,9 @@ public class StringSearch {
         }
         // System.out.println(vect.size());
 
-        // new StringSearch().naive(new String(bDay), vect);
-        // new StringSearch().KMP(new String(bDay), vect);
-        //new StringSearch().RabinKarp(new String(bDay), vect);
+        new StringSearch().naive(new String(bDay), vect);
+        new StringSearch().KMP(new String(bDay), vect);
+        new StringSearch().RabinKarp(new String(bDay), vect);
         new StringSearch().BoyerMoore(vect, bDay);
 
     }
@@ -226,11 +226,10 @@ public class StringSearch {
             i = 0;
             int j = 0;
             while (i < vect.size() - 6) {
-                i = 5;
+                j = 5;
                 while (j >= 0 && bDay[j] == vect.get(i + j)) {
                     j = j - 1;
                 }
-
                 if (j < 0) {
                     //  System.out.println("BirthDay Found At : " + i);
                     writer.append("BirthDay Found At : " + i + "\n");
